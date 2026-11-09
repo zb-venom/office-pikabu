@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <!-- Язык и заголовок перебивает i18n на старте: здесь значения по умолчанию,
+         которые видны только пока грузится бандл. -->
+    <title>Office: Company Tycoon</title>
+    <!-- Пустая иконка вкладки: без неё браузер просит /favicon.ico, не находит
+         и пишет 404 в консоль — а чистая консоль это отдельное требование
+         площадки. Своя иконка игре не нужна: на площадке она берётся из
+         Консоли, а игра живёт во фрейме. -->
+    <link rel="icon" href="data:," />
+    <!-- Праздничное оформление экрана загрузки: решается до первой отрисовки,
+         иначе экран успел бы показаться обычным. См. public/boot-season.js. -->
+    <script src="boot-season.js"></script>
+    <!-- Стили загрузки живут здесь, а не в CSS бандла: экран обязан появиться
+         до того, как бандл скачается, — иначе он опоздает ровно к тому
+         моменту, ради которого нужен. -->
+    <style>
+      html, body { margin: 0; height: 100%; background: #14161c; overflow: hidden; }
+      /* Safari на iPhone в альбоме сам раздувает длинный текст (лестница
+         стадий отдела выходила вдвое крупнее подписей рядом). Размер шрифта
+         задаёт игра — ползунком интерфейса. */
+      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+      /* Safari на iPhone в альбоме сам укрупняет текст длинных блоков — лестница
+         стадий отдела выходила вдвое крупнее подписей рядом. */
+      html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+      /* Размер поля для вёрстки. Окна и подсказки жмутся к его краям, а не к
+         краям окна браузера. Сегодня это одно и то же — поле занимает окно
+         целиком, — но переменная остаётся: считать от края поля правильно и
+         тогда, когда край совпал с краем окна, а места, где они разойдутся,
+         известны наперёд (баннер площадки сверху, вырез телефона сбоку).
+         Значения ставит fitToWindow(); до первого замера — всё окно.
+
+         Пар две, и это не дубль. --field-px-* — само число в пикселях
+         экрана, его пишет код. --field-w/h — то же число в единицах того,
+         кто его читает: на телефоне интерфейс уменьшен через zoom, и внутри
+         уменьшенной панели «343 пикселя экрана» — это 457 её собственных.
+         Пересчёт делает mobile.css, переопределяя вторую пару у себя;
+         вёрстка виджетов знает только про --field-w/h и остаётся честной в
+         обоих случаях. */
+      :root {
+        --field-px-w: 100vw;
+        --field-px-h: 100vh;
+        --field-w: var(--field-px-w);
+        --field-h: var(--field-px-h);
+      }
+
+      /* Игровое поле — весь экран. Пропорцию не режем: ограничение 2:1 стоило
+         трети экрана на телефоне в альбоме и половины на широком мониторе, а
+         игра рассчитана на любую — камера панорамируется, интерфейс жмётся к
+         краям поля.
+
+         Поле — это сам body, и не ради красоты: transform делает его
+         системой отсчёта для position: fixed, а весь интерфейс у нас на
+         fixed-оверлеях. Отсюда же и центрирование: обе строки держат
+         вёрстку честной на случай, если поле снова окажется меньше окна.
+         Размер ставит fitToWindow(), здесь значения до первого замера. */
+      body {
+        position: fixed;
+        left: 50%;
+        top: 50%;
+        width: 100vw;
+        height: 100vh;
+        transform: translate(-50%, -50%);
+        overflow: hidden;
+      }
+
+      #game { width: 100%; height: 100%; }
+      canvas { display: block; }
+
+      /* Выделение и перетаскивание гасим на всём документе: протяжка мышью
+         по офису не должна оставлять синюю подсветку на надписях интерфейса.
+         Поля ввода — исключение, иначе в них нельзя было бы ничего выбрать.
+         Событийные запреты живут в src/platform/desktop-input.ts; здесь то,
+         что обязано действовать ещё до загрузки бандла. */
+      body { user-select: none; -webkit-user-select: none; }
+      input, textarea { user-select: auto; -webkit-user-select: auto; }
+      canvas, img, svg { -webkit-user-drag: none; }
+      #game { touch-action: none; -webkit-tap-highlight-color: transparent; }
+
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 26px;
+        padding: 0 16px;
+        background: radial-gradient(ellipse at 50% 42%, #1e2636 0%, #14161c 62%);
+        font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        transition: opacity 320ms ease;
+      }
+
+      /* Сетка пола, как в игре: ромбы 2:1. Гаснет к краям, чтобы не спорить
+         с картинкой в центре. */
+      #boot::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background:
+          repeating-linear-gradient(26.57deg, transparent 0 27px, #5ab7ff14 27px 28px),
+          repeating-linear-gradient(-26.57deg, transparent 0 27px, #5ab7ff14 27px 28px);
+        -webkit-mask-image: radial-gradient(ellipse at 50% 55%, #000 0%, transparent 60%);
+        mask-image: radial-gradient(ellipse at 50% 55%, #000 0%, transparent 60%);
+      }
+
+      /* Экран убирается классом, а не удалением узла: снимать его посреди
+         перехода значило бы моргнуть чёрным. */
+      #boot.is-done { opacity: 0; pointer-events: none; }
+
+      /* Картинка без слов, а из слов до бандла — только название: оно одно
+         на всех языках, остальное подождёт, пока игра узнает язык игрока. */
+      #boot-scene { position: relative; display: flex; flex-direction: column; align-items: center; }
+      #boot-mark { position: relative; z-index: 1; width: 132px; height: 132px; animation: boot-sway 3s ease-in-out infinite; }
+      #boot-shadow {
+        width: 92px;
+        height: 14px;
+        margin-top: -14px;
+        border-radius: 50%;
+        background: #0008;
+        animation: boot-shadow 3s ease-in-out infinite;
+      }
+
+      /* Окна загораются по одному и гаснут: офис «просыпается», пока идёт
+         загрузка. Задержка у каждого своя, в разметке. */
+      #boot-mark .w { fill: #1b2230; animation: boot-lit 3.6s var(--d) ease-in-out infinite; }
+      #boot-mark .w.warm { --lit: #ffd27a; }
+
+      #boot-title {
+        margin: -8px 0 0;
+        text-align: center;
+        font-size: 40px;
+        line-height: 1;
+        font-weight: 900;
+        letter-spacing: 1px;
+        color: #f2f5fa;
+        text-shadow: 0 3px 0 #0f131b, 0 0 24px #5ab7ff40;
+      }
+      #boot-title span {
+        display: block;
+        margin-top: 6px;
+        font-size: 15px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #ffc53d;
+        text-shadow: 0 2px 0 #0f131b;
+      }
+
+      #boot-bar {
+        position: relative;
+        width: 240px;
+        max-width: 100%;
+        height: 10px;
+        border-radius: 999px;
+        background: #232a38;
+        box-shadow: inset 0 2px 0 #0003, 0 0 0 2px #0f131b;
+        overflow: hidden;
+      }
+
+      /* Полоса заполняется по стадиям запуска: до бандла она ползёт сама
+         (бандл о себе ничего не сообщает), дальше каждую стадию двигает
+         bootStage(). Внутри стадии полоса замедляется и до следующей отметки
+         не доходит — так она не врёт, что всё почти готово.
+
+         Двигается сдвигом, а не шириной, и не ради красоты: загрузка держит
+         главный поток секундами, ширина на это время замирает, а сдвиг
+         анимирует видеокарта. То же и у блика. */
+      #boot-fill {
+        position: absolute;
+        inset: 0;
+        border-radius: 999px;
+        background: linear-gradient(90deg, #2f8ed8, #6cc9ff);
+        overflow: hidden;
+        transform: translateX(-100%);
+        animation: boot-creep 9s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+      }
+
+      /* Блик поверх заполненной части: полоса выглядит живой и тогда, когда
+         стадия затянулась и деления стоят. */
+      #boot-fill::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(100deg, transparent, #fff6, transparent);
+        animation: boot-run 1.4s linear infinite;
+      }
+
+      /* Подпись под полосой: какая из работ идёт сейчас. Нужна затем, что
+         ожидания здесь разной природы — сеть, диск, видеокарта, — и молчащая
+         полоса одинаково выглядит и в норме, и когда что-то застряло.
+
+         Место под строку держится всегда: текст появляется позже полосы, и
+         без запаса высоты она подпрыгнула бы на середине загрузки. Отрицательный
+         отступ съедает общий зазор колонки — строка принадлежит полосе и
+         должна стоять к ней ближе, чем логотип. */
+      #boot-note {
+        margin-top: -14px;
+        min-height: 16px;
+        font: 13px/16px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        color: #7d879b;
+        letter-spacing: 0.2px;
+      }
+
+      /* Совет по игре под стадией. Место держится так же, как у подписи, и
+         на две строки: советы длиннее стадий. */
+      #boot-tip {
+        max-width: 320px;
+        min-height: 36px;
+        margin-top: -6px;
+        text-align: center;
+        font: 13px/18px system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        color: #a9b3c6;
+        transition: opacity 240ms ease;
+      }
+      #boot-tip.is-hidden { opacity: 0; }
+
+      @keyframes boot-creep { to { transform: translateX(-68%); } }
+
+      /* Блик пробегает заполненную часть справа налево, к началу полосы. */
+      @keyframes boot-run {
+        0% { transform: translateX(100%); }
+        100% { transform: translateX(-250%); }
+      }
+
+      @keyframes boot-sway {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
+      }
+
+      @keyframes boot-shadow {
+        0%, 100% { transform: scale(1); opacity: 1; }
+        50% { transform: scale(0.85); opacity: 0.7; }
+      }
+
+      @keyframes boot-lit {
+        0%, 100% { fill: #1b2230; }
+        20%, 70% { fill: var(--lit, #6cc9ff); }
+      }
+
+      /* Хэллоуин: класс ставит public/boot-season.js, поправляет boot-screen.ts.
+         Тыквы и мыши есть в разметке всегда и просто прячутся вне праздника. */
+      #boot .pumpkin, #boot .bat { display: none; }
+      .halloween #boot .pumpkin, .halloween #boot .bat { display: block; }
+      .halloween #boot { background: radial-gradient(ellipse at 50% 42%, #2c1f3d 0%, #14161c 62%); }
+      .halloween #boot::before {
+        background:
+          repeating-linear-gradient(26.57deg, transparent 0 27px, #b77dff14 27px 28px),
+          repeating-linear-gradient(-26.57deg, transparent 0 27px, #b77dff14 27px 28px);
+      }
+      .halloween #boot-mark .w { --lit: #ff9a3c; }
+      .halloween #boot-mark .w.warm { --lit: #ffd35a; }
+      .halloween #boot-title { text-shadow: 0 3px 0 #0f131b, 0 0 24px #ff8a3c55; }
+      .halloween #boot-title span { color: #ff9a3c; }
+      .halloween #boot-fill { background: linear-gradient(90deg, #d5591a, #ffb45a); }
+      .halloween #boot-mark .pumpkin__face { animation: boot-candle 1.3s ease-in-out infinite alternate; }
+
+      .bat { position: absolute; width: 34px; height: 17px; overflow: visible; }
+      .bat--one { top: 4px; left: -38px; animation: boot-bat-one 5s ease-in-out infinite; }
+      .bat--two { top: 30px; right: -46px; width: 26px; height: 13px; animation: boot-bat-two 6.5s ease-in-out infinite; }
+      .bat__wings { transform-origin: 12px 5px; animation: boot-flap 0.3s ease-in-out infinite alternate; }
+
+      @keyframes boot-candle { to { fill: #ff9f2e; opacity: 0.75; } }
+      @keyframes boot-flap { to { transform: scaleY(0.62); } }
+      @keyframes boot-bat-one {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(22px, -10px); }
+      }
+      @keyframes boot-bat-two {
+        0%, 100% { transform: translate(0, 0); }
+        50% { transform: translate(-18px, 12px); }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #boot-mark, #boot-shadow, #boot-fill::after, .bat, .bat__wings,
+        .halloween #boot-mark .pumpkin__face { animation: none; }
+        #boot-mark .w { animation: none; fill: var(--lit, #6cc9ff); }
+      }
+    </style>
+    <script type="module" crossorigin src="./assets/index-76hideQx.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B361lQNt.css">
+    <meta name="build-at" content="1794258949560">
+  </head>
+  <body>
+    <div id="game"></div>
+    <div id="boot">
+      <div id="boot-scene" aria-hidden="true">
+        <!-- Изометрический офис: две стены и крыша, окна в сетке каждой стены. -->
+        <svg id="boot-mark" viewBox="0 0 120 120">
+          <g stroke="#0f131b" stroke-width="3" stroke-linejoin="round">
+            <path d="M20 34 L60 54 L60 104 L20 84 Z" fill="#313a4d"/>
+            <path d="M60 54 L100 34 L100 84 L60 104 Z" fill="#262d3d"/>
+            <path d="M60 14 L100 34 L60 54 L20 34 Z" fill="#3f4a63"/>
+            <!-- Кондиционер на крыше: коробка из тех же трёх граней, что и здание. -->
+            <g stroke-width="2">
+              <path d="M60 20 L68 24 L68 30 L60 26 Z" fill="#8a94a8"/>
+              <path d="M68 24 L76 20 L76 26 L68 30 Z" fill="#6b7489"/>
+              <path d="M68 16 L76 20 L68 24 L60 20 Z" fill="#b3bccb"/>
+            </g>
+          </g>
+          <g transform="matrix(1 .5 0 1 20 34)">
+            <rect class="w" style="--d:0s" x="5" y="8" width="7" height="9" rx="1"/>
+            <rect class="w warm" style="--d:1.3s" x="16.5" y="8" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:2.4s" x="28" y="8" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:.8s" x="5" y="21" width="7" height="9" rx="1"/>
+            <rect class="w warm" style="--d:2.9s" x="16.5" y="21" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:1.8s" x="28" y="21" width="7" height="9" rx="1"/>
+            <rect x="15" y="35" width="10" height="15" rx="1" fill="#6b5238" stroke="#0f131b"
+              stroke-width="2.4"/>
+          </g>
+          <g transform="matrix(1 -.5 0 1 60 54)">
+            <rect class="w" style="--d:.4s" x="5" y="8" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:2.1s" x="16.5" y="8" width="7" height="9" rx="1"/>
+            <rect class="w warm" style="--d:1s" x="28" y="8" width="7" height="9" rx="1"/>
+            <rect class="w warm" style="--d:3.2s" x="5" y="21" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:.2s" x="16.5" y="21" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:2.6s" x="28" y="21" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:1.6s" x="5" y="34" width="7" height="9" rx="1"/>
+            <rect class="w warm" style="--d:.6s" x="16.5" y="34" width="7" height="9" rx="1"/>
+            <rect class="w" style="--d:3s" x="28" y="34" width="7" height="9" rx="1"/>
+          </g>
+          <!-- Тыквы у входа: видны только на Хэллоуин. -->
+          <g class="pumpkin"><ellipse cx="27" cy="94" rx="9.2" ry="7.04" fill="#b4520f" stroke="#0f131b" stroke-width="1.6"/><ellipse cx="22.6" cy="94" rx="4.4" ry="6.56" fill="#e8731c"/><ellipse cx="31.4" cy="94" rx="4.4" ry="6.56" fill="#e8731c"/><ellipse cx="27" cy="94" rx="4" ry="6.88" fill="#f08a2c"/><rect x="25.8" y="84.4" width="2.4" height="3.6" rx=".6" fill="#4f5a2a"/><g class="pumpkin__face" fill="#ffd35a"><path d="M22.04 93.6 L25.56 93.6 L23.8 90.64 Z"/><path d="M28.44 93.6 L31.96 93.6 L30.2 90.64 Z"/><path d="M22.2 95.6 L31.8 95.6 L27 98.4 Z"/></g></g>
+          <g class="pumpkin"><ellipse cx="90" cy="97" rx="7.13" ry="5.456" fill="#b4520f" stroke="#0f131b" stroke-width="1.6"/><ellipse cx="86.59" cy="97" rx="3.41" ry="5.084" fill="#e8731c"/><ellipse cx="93.41" cy="97" rx="3.41" ry="5.084" fill="#e8731c"/><ellipse cx="90" cy="97" rx="3.1" ry="5.332" fill="#f08a2c"/><rect x="89.07" y="89.56" width="1.86" height="2.79" rx=".6" fill="#4f5a2a"/><g class="pumpkin__face" fill="#ffd35a"><path d="M86.156 96.69 L88.884 96.69 L87.52 94.396 Z"/><path d="M91.116 96.69 L93.844 96.69 L92.48 94.396 Z"/><path d="M86.28 98.24 L93.72 98.24 L90 100.41 Z"/></g></g>
+        </svg>
+        <div id="boot-shadow"></div>
+        <!-- Летучие мыши: тоже только на Хэллоуин. -->
+        <svg class="bat bat--one" viewBox="0 0 24 12"><g fill="#1c1128" stroke="#8a64b8" stroke-width=".8" stroke-linejoin="round"><g class="bat__wings"><path d="M11 5 C8 1.5 4 1 .5 3 C2.5 4 2.5 5.5 1.5 7 C3.5 6 5.5 6.5 6.5 8.5 C7.5 7 9.5 7 10.5 8 Z"/><path d="M13 5 C16 1.5 20 1 23.5 3 C21.5 4 21.5 5.5 22.5 7 C20.5 6 18.5 6.5 17.5 8.5 C16.5 7 14.5 7 13.5 8 Z"/></g><path d="M10.5 4.5 L10.8 2 L12 3.4 L13.2 2 L13.5 4.5 Q14 8 12 10.5 Q10 8 10.5 4.5 Z"/></g></svg>
+        <svg class="bat bat--two" viewBox="0 0 24 12"><g fill="#1c1128" stroke="#8a64b8" stroke-width=".8" stroke-linejoin="round"><g class="bat__wings"><path d="M11 5 C8 1.5 4 1 .5 3 C2.5 4 2.5 5.5 1.5 7 C3.5 6 5.5 6.5 6.5 8.5 C7.5 7 9.5 7 10.5 8 Z"/><path d="M13 5 C16 1.5 20 1 23.5 3 C21.5 4 21.5 5.5 22.5 7 C20.5 6 18.5 6.5 17.5 8.5 C16.5 7 14.5 7 13.5 8 Z"/></g><path d="M10.5 4.5 L10.8 2 L12 3.4 L13.2 2 L13.5 4.5 Q14 8 12 10.5 Q10 8 10.5 4.5 Z"/></g></svg>
+      </div>
+      <h1 id="boot-title">Office<span>Company Tycoon</span></h1>
+      <div id="boot-bar" role="progressbar" aria-label="Loading" aria-valuemin="0"
+        aria-valuemax="100"><i id="boot-fill"></i></div>
+      <!-- Пусто до тех пор, пока игра не узнает язык игрока: см. bootStage(). -->
+      <div id="boot-note" role="status" aria-live="polite"></div>
+      <div id="boot-tip"></div>
+    </div>
+  </body>
+</html>
