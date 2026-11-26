@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-13.50 11.75 27.00 31.25" width="108" height="125">
+  <!-- Свечение экрана, ракурс 7. Накладывается режимом сложения. Пустой файл — экран в этом ракурсе смотрит от камеры. -->
+  <defs><radialGradient id="g"><stop offset="0" stop-color="#7fc4ff" stop-opacity="0.40"/><stop offset="1" stop-color="#7fc4ff" stop-opacity="0"/></radialGradient></defs>
+  <ellipse cx="0.00" cy="35.98" rx="13" ry="6.5" fill="url(#g)"/>
+  <ellipse cx="0.00" cy="19.25" rx="10" ry="7" fill="url(#g)" opacity="0.55"/>
+</svg>

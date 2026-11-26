@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-30.75 -31.75 83.50 72.25" width="334" height="289">
+  <!-- Кухонная тумба, поворот 3. Изометрия 2:1 движка (tile 64x32). След 2x1, корпус в дальней половине клеток — ставится к стене. Лицо смотрит в rotate((0,1), 270). Столешница на высоте 27: на неё встаёт то, что стоит на тумбе. Якорь: центр следа на полу, x=46.75 y=55.75 от левого верха viewBox. -->
+  <path d="M -28.80,31.68 L 31.36,1.60 L 48.00,9.92 L -12.16,40.00 Z" fill="#000000" opacity="0.20"/>
+  <path d="M 46.08,6.42 L -12.16,35.54 L -12.16,39.04 L 46.08,9.92 Z" fill="#535a63"/>
+  <path d="M -12.16,35.54 L -27.84,27.70 L -27.84,31.20 L -12.16,39.04 Z" fill="#666a6c"/>
+  <path d="M -27.84,27.70 L 30.40,-1.42 L 46.08,6.42 L -12.16,35.54 Z" fill="#898e92"/>
+  <path d="M 48.00,-14.08 L -12.16,16.00 L -12.16,36.50 L 48.00,6.42 Z" fill="#848992"/>
+  <path d="M -12.16,16.00 L -28.80,7.68 L -28.80,28.18 L -12.16,36.50 Z" fill="#a3a2a0"/>
+  <path d="M -28.80,7.68 L 31.36,-22.40 L 48.00,-14.08 L -12.16,16.00 Z" fill="#d9dad8"/>
+  <path d="M -10.34,16.29 L 17.39,2.42 L 17.39,20.52 L -10.34,34.39 Z" fill="#cccece"/>
+  <path d="M 18.45,1.90 L 46.18,-11.97 L 46.18,6.13 L 18.45,20.00 Z" fill="#cccece"/>
+  <path d="M 17.39,2.42 L 18.45,1.90 L 18.45,20.00 L 17.39,20.52 Z" fill="#969ba0"/>
+  <path d="M 16.64,12.08 L 16.64,6.08" fill="none" stroke="#9aa2aa" stroke-width="2.20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 16.64,12.08 L 16.64,6.08" fill="none" stroke="#59616a" stroke-width="1.40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 21.76,9.52 L 21.76,3.52" fill="none" stroke="#9aa2aa" stroke-width="2.20" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 21.76,9.52 L 21.76,3.52" fill="none" stroke="#59616a" stroke-width="1.40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 31.68,-30.24 L -28.48,-0.16 L -28.48,4.84 L 31.68,-25.24 Z" fill="#7f858d"/>
+  <path d="M -28.48,-0.16 L -30.08,-0.96 L -30.08,4.04 L -28.48,4.84 Z" fill="#9c9d9b"/>
+  <path d="M -30.08,-0.96 L 30.08,-31.04 L 31.68,-30.24 L -28.48,-0.16 Z" fill="#d1d2d1"/>
+  <path d="M 50.24,-17.08 L -12.16,14.12 L -12.16,17.12 L 50.24,-14.08 Z" fill="#76664d"/>
+  <path d="M -12.16,14.12 L -29.92,5.24 L -29.92,8.24 L -12.16,17.12 Z" fill="#917955"/>
+  <path d="M -29.92,5.24 L 32.48,-25.96 L 50.24,-17.08 L -12.16,14.12 Z" fill="#c2a273"/>
+  <path d="M -28.32,0.52 Q -20.80,-1.64 -13.28,-7.00 Q -5.76,-9.16 1.76,-14.52 Q 9.28,-16.68 16.80,-22.04 Q 24.32,-24.20 31.84,-29.56" fill="none" stroke="#c99a2a" stroke-width="1.60" stroke-linecap="round"/>
+  <path d="M -28.32,0.52 Q -20.80,-1.64 -13.28,-7.00 Q -5.76,-9.16 1.76,-14.52 Q 9.28,-16.68 16.80,-22.04 Q 24.32,-24.20 31.84,-29.56" fill="none" stroke="#f2c94c" stroke-width="1.00" stroke-linecap="round" stroke-dasharray="0.8 0.6"/>
+  <ellipse cx="-17.60" cy="1.74" rx="1.50" ry="1.35" fill="#c9661a"/>
+  <ellipse cx="-17.90" cy="1.59" rx="1.17" ry="1.05" fill="#f08a24"/>
+  <ellipse cx="-18.20" cy="1.14" rx="0.33" ry="0.27" fill="#ffd8a8" opacity="0.8"/>
+  <ellipse cx="-17.07" cy="0.32" rx="0.68" ry="0.30" fill="#3f7a2e"/>
+  <ellipse cx="-21.44" cy="3.66" rx="1.50" ry="1.35" fill="#c9661a"/>
+  <ellipse cx="-21.74" cy="3.51" rx="1.17" ry="1.05" fill="#f08a24"/>
+  <ellipse cx="-22.04" cy="3.06" rx="0.33" ry="0.27" fill="#ffd8a8" opacity="0.8"/>
+  <ellipse cx="-20.91" cy="2.24" rx="0.68" ry="0.30" fill="#3f7a2e"/>
+  <ellipse cx="-16.32" cy="4.62" rx="1.50" ry="1.35" fill="#c9661a"/>
+  <ellipse cx="-16.62" cy="4.47" rx="1.17" ry="1.05" fill="#f08a24"/>
+  <ellipse cx="-16.92" cy="4.02" rx="0.33" ry="0.27" fill="#ffd8a8" opacity="0.8"/>
+  <ellipse cx="-15.79" cy="3.20" rx="0.68" ry="0.30" fill="#3f7a2e"/>
+  <path d="M -12.16,17.12 Q -4.36,16.22 3.44,9.32 Q 11.24,8.42 19.04,1.52 Q 26.84,0.62 34.64,-6.28 Q 42.44,-7.18 50.24,-14.08" fill="none" stroke="#2a2530" stroke-width="0.5"/>
+  <ellipse cx="-10.21" cy="17.60" rx="1.98" ry="1.98" fill="#ff4d4d" opacity="0.12"/>
+  <ellipse cx="-10.21" cy="17.60" rx="0.90" ry="0.90" fill="#ff4d4d" opacity="0.6"/>
+  <ellipse cx="-6.31" cy="16.40" rx="1.98" ry="1.98" fill="#ffd34d" opacity="0.12"/>
+  <ellipse cx="-6.31" cy="16.40" rx="0.90" ry="0.90" fill="#ffd34d" opacity="0.6"/>
+  <ellipse cx="-4.36" cy="15.52" rx="1.98" ry="1.98" fill="#4dd17a" opacity="0.12"/>
+  <ellipse cx="-4.36" cy="15.52" rx="0.90" ry="0.90" fill="#4dd17a" opacity="0.6"/>
+  <ellipse cx="-0.46" cy="13.20" rx="1.98" ry="1.98" fill="#4da6ff" opacity="0.12"/>
+  <ellipse cx="-0.46" cy="13.20" rx="0.90" ry="0.90" fill="#4da6ff" opacity="0.6"/>
+  <ellipse cx="1.49" cy="11.75" rx="1.98" ry="1.98" fill="#ff4d4d" opacity="0.12"/>
+  <ellipse cx="1.49" cy="11.75" rx="0.90" ry="0.90" fill="#ff4d4d" opacity="0.6"/>
+  <ellipse cx="3.44" cy="10.12" rx="1.98" ry="1.98" fill="#ffd34d" opacity="0.12"/>
+  <ellipse cx="3.44" cy="10.12" rx="0.90" ry="0.90" fill="#ffd34d" opacity="0.6"/>
+  <ellipse cx="5.39" cy="9.80" rx="1.98" ry="1.98" fill="#4dd17a" opacity="0.12"/>
+  <ellipse cx="5.39" cy="9.80" rx="0.90" ry="0.90" fill="#4dd17a" opacity="0.6"/>
+  <ellipse cx="9.29" cy="8.60" rx="1.98" ry="1.98" fill="#4da6ff" opacity="0.12"/>
+  <ellipse cx="9.29" cy="8.60" rx="0.90" ry="0.90" fill="#4da6ff" opacity="0.6"/>
+  <ellipse cx="11.24" cy="7.72" rx="1.98" ry="1.98" fill="#ff4d4d" opacity="0.12"/>
+  <ellipse cx="11.24" cy="7.72" rx="0.90" ry="0.90" fill="#ff4d4d" opacity="0.6"/>
+  <ellipse cx="15.14" cy="5.39" rx="1.98" ry="1.98" fill="#ffd34d" opacity="0.12"/>
+  <ellipse cx="15.14" cy="5.39" rx="0.90" ry="0.90" fill="#ffd34d" opacity="0.6"/>
+  <ellipse cx="17.09" cy="3.95" rx="1.98" ry="1.98" fill="#4dd17a" opacity="0.12"/>
+  <ellipse cx="17.09" cy="3.95" rx="0.90" ry="0.90" fill="#4dd17a" opacity="0.6"/>
+  <ellipse cx="19.04" cy="2.32" rx="1.98" ry="1.98" fill="#4da6ff" opacity="0.12"/>
+  <ellipse cx="19.04" cy="2.32" rx="0.90" ry="0.90" fill="#4da6ff" opacity="0.6"/>
+  <ellipse cx="22.94" cy="1.49" rx="1.98" ry="1.98" fill="#ff4d4d" opacity="0.12"/>
+  <ellipse cx="22.94" cy="1.49" rx="0.90" ry="0.90" fill="#ff4d4d" opacity="0.6"/>
+  <ellipse cx="24.89" cy="0.80" rx="1.98" ry="1.98" fill="#ffd34d" opacity="0.12"/>
+  <ellipse cx="24.89" cy="0.80" rx="0.90" ry="0.90" fill="#ffd34d" opacity="0.6"/>
+  <ellipse cx="26.84" cy="-0.08" rx="1.98" ry="1.98" fill="#4dd17a" opacity="0.12"/>
+  <ellipse cx="26.84" cy="-0.08" rx="0.90" ry="0.90" fill="#4dd17a" opacity="0.6"/>
+  <ellipse cx="30.74" cy="-2.41" rx="1.98" ry="1.98" fill="#4da6ff" opacity="0.12"/>
+  <ellipse cx="30.74" cy="-2.41" rx="0.90" ry="0.90" fill="#4da6ff" opacity="0.6"/>
+  <ellipse cx="32.69" cy="-3.85" rx="1.98" ry="1.98" fill="#ff4d4d" opacity="0.12"/>
+  <ellipse cx="32.69" cy="-3.85" rx="0.90" ry="0.90" fill="#ff4d4d" opacity="0.6"/>
+  <ellipse cx="34.64" cy="-5.48" rx="1.98" ry="1.98" fill="#ffd34d" opacity="0.12"/>
+  <ellipse cx="34.64" cy="-5.48" rx="0.90" ry="0.90" fill="#ffd34d" opacity="0.6"/>
+  <ellipse cx="38.54" cy="-6.31" rx="1.98" ry="1.98" fill="#4dd17a" opacity="0.12"/>
+  <ellipse cx="38.54" cy="-6.31" rx="0.90" ry="0.90" fill="#4dd17a" opacity="0.6"/>
+  <ellipse cx="40.49" cy="-7.00" rx="1.98" ry="1.98" fill="#4da6ff" opacity="0.12"/>
+  <ellipse cx="40.49" cy="-7.00" rx="0.90" ry="0.90" fill="#4da6ff" opacity="0.6"/>
+  <ellipse cx="44.39" cy="-8.95" rx="1.98" ry="1.98" fill="#ff4d4d" opacity="0.12"/>
+  <ellipse cx="44.39" cy="-8.95" rx="0.90" ry="0.90" fill="#ff4d4d" opacity="0.6"/>
+  <ellipse cx="46.34" cy="-10.21" rx="1.98" ry="1.98" fill="#ffd34d" opacity="0.12"/>
+  <ellipse cx="46.34" cy="-10.21" rx="0.90" ry="0.90" fill="#ffd34d" opacity="0.6"/>
+  <ellipse cx="48.29" cy="-11.65" rx="1.98" ry="1.98" fill="#4dd17a" opacity="0.12"/>
+  <ellipse cx="48.29" cy="-11.65" rx="0.90" ry="0.90" fill="#4dd17a" opacity="0.6"/>
+  <ellipse cx="50.24" cy="-13.28" rx="1.98" ry="1.98" fill="#4da6ff" opacity="0.12"/>
+  <ellipse cx="50.24" cy="-13.28" rx="0.90" ry="0.90" fill="#4da6ff" opacity="0.6"/>
+</svg>

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-12.00 -33.25 38.00 71.50" width="152" height="286">
+  <!-- Холодильник, поворот 0. Изометрия 2:1 движка (tile 64x32). След 1x1, корпус в дальней половине клетки — ставится к стене, спереди остаётся место открыть дверцу. Лицо смотрит в rotate((0,1), 0). Якорь: центр клетки на полу, x=12.00 y=65.25 от левого верха viewBox. -->
+  <path d="M 3.95,19.25 L 25.49,30.03 L 10.13,37.71 L -11.41,26.93 Z" fill="#000000" opacity="0.20"/>
+  <path d="M 24.32,26.44 L 9.92,33.64 L 9.92,36.64 L 24.32,29.44 Z" fill="#5b626c"/>
+  <path d="M 9.92,33.64 L -9.28,24.04 L -9.28,27.04 L 9.92,36.64 Z" fill="#707476"/>
+  <path d="M 5.12,16.84 L 24.32,26.44 L 9.92,33.64 L -9.28,24.04 Z" fill="#969ba0"/>
+  <path d="M 25.28,-22.08 L 9.92,-14.40 L 9.92,34.60 L 25.28,26.92 Z" fill="#828891"/>
+  <path d="M 9.92,-14.40 L -11.20,-24.96 L -11.20,24.04 L 9.92,34.60 Z" fill="#a0a09e"/>
+  <path d="M 4.16,-32.64 L 25.28,-22.08 L 9.92,-14.40 L -11.20,-24.96 Z" fill="#d6d7d6"/>
+  <path d="M -10.12,-23.22 L 8.84,-13.74 L 8.84,1.86 L -10.12,-7.62 Z" fill="#c9cccd"/>
+  <path d="M -10.12,-6.42 L 8.84,3.06 L 8.84,32.86 L -10.12,23.38 Z" fill="#c9cccd"/>
+  <path d="M -10.12,-7.62 L 8.84,1.86 L 8.84,3.06 L -10.12,-6.42 Z" fill="#878d91"/>
+  <path d="M -8.30,0.99 L -3.87,3.21 L -3.87,10.71 L -8.30,8.49 Z" fill="#e1bc56"/>
+  <path d="M -2.66,2.31 L 0.97,4.13 L 0.97,10.13 L -2.66,8.31 Z" fill="#7bacc8"/>
+  <path d="M -7.49,11.89 L -4.67,13.30 L -4.67,18.30 L -7.49,16.89 Z" fill="#d98469"/>
+  <circle cx="-6.08" cy="0.20" r="1.1" fill="#ba523b"/>
+  <path d="M 4.32,27.24 L 4.32,6.24" fill="none" stroke="#8b939b" stroke-width="2.40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 4.32,27.24 L 4.32,6.24" fill="none" stroke="#59616a" stroke-width="1.50" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 4.32,-2.76 L 4.32,-10.76" fill="none" stroke="#8b939b" stroke-width="2.40" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 4.32,-2.76 L 4.32,-10.76" fill="none" stroke="#59616a" stroke-width="1.50" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
